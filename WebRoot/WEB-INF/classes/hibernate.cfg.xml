@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+<session-factory>
+
+	<!-- 数据库基本配置 因为采用的是c3p0数据库，所以不需要使用hibernate的连接池了。
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql:///oa</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
+	-->
+	<property name="dialect">
+		org.hibernate.dialect.MySQL5InnoDBDialect
+	</property>
+
+	<!-- 其他配置信息 -->
+	<property name="show_sql">true</property>
+
+	<property name="hbm2ddl.auto">update</property>
+	<!-- 映射文件 -->
+	<mapping resource="cn/edu/lzcc/oa/domain/Role.hbm.xml" />
+	<mapping resource="cn/edu/lzcc/oa/domain/User.hbm.xml" />
+	<mapping resource="cn/edu/lzcc/oa/domain/Department.hbm.xml" />
+	<mapping resource="cn/edu/lzcc/oa/domain/Privilege.hbm.xml" />
+	<mapping resource="cn/edu/lzcc/oa/domain/Forum.hbm.xml" />
+	<mapping resource="cn/edu/lzcc/oa/domain/Reply.hbm.xml" />
+	<mapping resource="cn/edu/lzcc/oa/domain/Topic.hbm.xml" />
+
+</session-factory>
+
+</hibernate-configuration>
+

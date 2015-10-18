@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<!-- struts2的开发模式， -->
+    <constant name="struts.devMode" value="true" />
+    <!-- 配置文件的后缀名必须是以action结尾的 -->
+    <constant name="struts.action.extension" value="action" />
+    <!-- 配置成不需要struts为我们提供html扩展。 -->
+    <constant name="struts.ui.theme" value="simple" />
+
+    <package name="default" namespace="/" extends="struts-default">
+    
+    	<interceptors>
+    		<!-- 自定义拦截器  -->
+    		<interceptor name="checkPrivilege" class="cn.edu.lzcc.oa.utils.CheckPrivilegeInterceptor">
+    		</interceptor>
+    		<!-- 重新定义defaultStack -->
+    		<interceptor-stack name="defaultStack">
+    			<interceptor-ref name="checkPrivilege"></interceptor-ref>
+    			<interceptor-ref name="defaultStack"></interceptor-ref>
+    		</interceptor-stack>
+    	</interceptors>
+    	
+    	<!-- 全局的Result配置 -->
+		<global-results>
+			<result name="loginUI">/WEB-INF/jsp/userAction/loginUI.jsp</result>
+			<result name="noPrivilegeError">/noPrivilegeError.jsp</result>
+		</global-results>
+		
+    	<!-- 在没有和spring整合成功之前，class的名字必须写完整的类名 -->
+    	<!-- 但是在和spring整合成功之后，class的名字可以写类的简单名称了 -->
+		<action name="test" class="testAction">
+			<result name="success">/test.jsp</result>
+		</action>
+		
+		<!-- 采用   * 做通配符可以匹配role后缀的所有方法，后面{1}取得是 * 的值 -->
+		<action name="role_*" class="cn.edu.lzcc.oa.view.action.RoleAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/roleAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/roleAction/saveUI.jsp</result>
+			<result name="setPrivilegeUI">/WEB-INF/jsp/roleAction/setPrivilegeUI.jsp</result>
+			<result name="toList" type="redirectAction">role_list</result>
+		</action>
+		
+		<!-- 部门的配置 -->
+		<action name="department_*" class="cn.edu.lzcc.oa.view.action.DepartmentAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/departmentAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/departmentAction/saveUI.jsp</result>
+			<result name="toList" type="redirectAction">department_list?parentId=${parentId}</result>
+		</action>
+		
+		<!-- 用户的配置 -->
+		<action name="user_*" class="cn.edu.lzcc.oa.view.action.UserAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/userAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/userAction/saveUI.jsp</result>
+			<result name="toList" type="redirectAction">user_list</result>
+			
+			<result name="loginUI">/WEB-INF/jsp/userAction/loginUI.jsp</result>
+			<result name="logout">/WEB-INF/jsp/userAction/logout.jsp</result>
+			<result name="toIndex" type="redirect">/index.jsp</result>
+		</action>
+		
+		<!-- index等的配置 -->
+		<action name="home_*" class="cn.edu.lzcc.oa.view.action.HomeAction" method="{1}">
+			<result name="{1}">/WEB-INF/jsp/homeAction/{1}.jsp</result>
+		</action>
+		
+		<!-- 论坛：论坛管理 -->
+		<action name="forumManage_*" class="cn.edu.lzcc.oa.view.action.ForumManageAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/forumManageAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/forumManageAction/saveUI.jsp</result>
+			<result name="toList" type="redirectAction">forumManage_list</result>
+		</action>
+		
+		<!-- 论坛：论坛模块 -->
+		<action name="forum_*" class="cn.edu.lzcc.oa.view.action.ForumAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/forumAction/list.jsp</result>
+			<result name="show">/WEB-INF/jsp/forumAction/show.jsp</result>
+		</action>
+		<!-- 论坛：主题模块 -->
+		<action name="topic_*" class="cn.edu.lzcc.oa.view.action.TopicAction" method="{1}">
+			<result name="show">/WEB-INF/jsp/topicAction/show.jsp</result>
+			<result name="addUI">/WEB-INF/jsp/topicAction/addUI.jsp</result>
+			<result name="toShow" type="redirectAction">topic_show?id=${id}</result>
+		</action>
+		<!-- 论坛：回复模块 -->
+		<action name="reply_*" class="cn.edu.lzcc.oa.view.action.ReplyAction" method="{1}">
+			<result name="addUI">/WEB-INF/jsp/replyAction/addUI.jsp</result>
+			<result name="toTopicShow" type="redirectAction">topic_show?id=${topicId}</result>
+		</action>
+    </package>
+
+
+</struts>
